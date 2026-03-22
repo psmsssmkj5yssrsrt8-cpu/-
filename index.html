@@ -67,10 +67,6 @@ h1 .s{color:var(--accent-s);}h1 .m{color:var(--accent-m);}
 .blood-box{border-radius:8px;padding:8px 10px;margin-top:6px;}
 .bb-sg{background:var(--s-green-bg);border:1px solid #90c890;}
 .bb-sb{background:var(--s-blue-bg);border:1px solid #90b8d8;}
-.bb-mg{background:var(--m1g-bg);border:1px solid #a0d8a0;}
-.bb-mb{background:var(--m1b-bg);border:1px solid #a0c8e8;}
-.bb-mp{background:var(--m2p-bg);border:1px solid #e090c0;}
-.bb-ms{background:var(--m3s-bg);border:1px solid #e09080;}
 .btags{display:flex;flex-wrap:wrap;gap:3px;min-height:20px;}
 .btag{border-radius:4px;padding:2px 7px;font-size:.7rem;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);}
 </style>
@@ -97,6 +93,7 @@ const FACTORS=['速','長','短','中','走'];const N=4;
 
 function xid(h,sec,row,col){return 'x'+h+'_'+sec+'_'+row+'_'+col;}
 function clean(sym){return sym ? sym.replace(/[①②③④⑤]/g, '') : '';}
+function getNumSuffix(sym){const m=sym?sym.match(/[①②③④⑤]/):null; return m?m[0]:'';}
 
 function mkTree(h,rows,pfx,fn){
   var o='<div class="tree-wrap"><table class="tree-table"><tbody>';
@@ -170,8 +167,25 @@ function mMx(h,sec,ri,ctype){
 }
 
 function syncGroup(h, sec, sym, val, ctype){
-  if(!sym) return; var base=clean(sym); var rows=(sec==='sdt'?S_ROWS:(sec==='m1'?M1:M2));
-  rows.forEach((r, i)=>{ if(clean(r.sym)===base){ var el=document.getElementById(xid(h,sec,i,ctype)); if(el) el.value=val; } });
+  if(!sym) return;
+  const baseSym = clean(sym);
+  const baseValue = clean(val); // 入力値から数字を抜いた純粋な名前
+  const rows = (sec==='sdt'?S_ROWS:(sec==='m1'?M1:M2));
+
+  rows.forEach((r, i)=>{
+    if(clean(r.sym) === baseSym){
+      let targetVal = val;
+      if (ctype === 'nm' && val !== '') {
+        const targetSuffix = getNumSuffix(r.sym);
+        // 入力値にターゲットの数字が含まれていなければ付与する
+        if (targetSuffix && !val.includes(targetSuffix)) {
+          targetVal = baseValue + targetSuffix;
+        }
+      }
+      var el=document.getElementById(xid(h,sec,i,ctype));
+      if(el) el.value = targetVal;
+    }
+  });
 }
 
 function sUpd(h){
