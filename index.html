@@ -106,6 +106,25 @@ function xid(h,sec,row,col){return 'x'+h+'_'+sec+'_'+row+'_'+col;}
 function sfx(sym){if(!sym)return '';var m=sym.match(/[①②③④⑤]/);return m?m[0]:'';}
 function clean(s){return s?s.replace(/[①②③④⑤]/g,''):'';}
 
+// データの保存機能
+function saveData(){
+  const data={};
+  document.querySelectorAll('input[id^="x"]').forEach(el=>{ data[el.id]=el.value; });
+  localStorage.setItem('horse_bloodline_data', JSON.stringify(data));
+}
+
+// データの読込機能
+function loadData(){
+  const saved=localStorage.getItem('horse_bloodline_data');
+  if(!saved)return;
+  const data=JSON.parse(saved);
+  Object.keys(data).forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.value=data[id];
+  });
+  for(let h=0; h<N; h++){ sUpd(h); mUpd(h); }
+}
+
 function mkTree(h,rows,pfx,fn){
   var o='<div class="tree-wrap"><table class="tree-table"><tbody>';
   rows.forEach(function(row,i){
@@ -194,10 +213,11 @@ function sTr(h,tr,col){
     });
   }
   sUpd(h);
+  saveData(); // 保存
 }
 
-function sMx(h,sec,ri){sUpd(h);}
-function mMx(h,sec,ri){mSync(h);mUpd(h);}
+function sMx(h,sec,ri){ sUpd(h); saveData(); }
+function mMx(h,sec,ri){ mSync(h); mUpd(h); saveData(); }
 
 function sUpd(h){
   var cnt={};FACTORS.forEach(function(f){cnt[f]=0;});
@@ -214,6 +234,7 @@ function mTr(h,tr,col){
   M1.forEach(function(row,i){if(row.auto&&row.tk&&row.tk.r===tr&&row.tk.c===col){var el=document.getElementById(xid(h,'m1',i,'nm'));if(el)el.value=val?val+sfx(row.sym):'';}});
   M2.forEach(function(row,i){if(row.auto&&row.tk&&row.tk.r===tr&&row.tk.c===col){var el=document.getElementById(xid(h,'m2',i,'nm'));if(el)el.value=val?val+sfx(row.sym):'';}});
   mSync(h);mUpd(h);
+  saveData(); // 保存
 }
 
 function mSync(h){
@@ -255,13 +276,23 @@ function setT(eid,arr){
   el.innerHTML=arr.length?arr.map(function(b){return '<span class="btag">'+b+'</span>';}).join(''):'<span class="empty-tag">入力すると表示されます</span>';
 }
 
-function clearTab(h){document.getElementById('tab'+h).querySelectorAll('input').forEach(function(el){el.value='';});sUpd(h);mUpd(h);}
+function clearTab(h){
+  if(confirm("この馬のデータをすべて削除しますか？")){
+    document.getElementById('tab'+h).querySelectorAll('input').forEach(function(el){el.value='';});
+    sUpd(h); mUpd(h);
+    saveData(); // 保存
+  }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   for(let i=0; i<N; i++){
-    let b = document.getElementById('tbtn'+i);
-    if(b) b.onclick = function(){ switchTab(i); };
+    let b = document.getElementById('tbtn0'); // 初期化用
+    for(let j=0; j<N; j++){
+      let btn = document.getElementById('tbtn'+j);
+      if(btn) btn.onclick = function(){ switchTab(j); };
+    }
   }
+  loadData(); // 開いた時に読込
 });
 
 for(var h=0;h<N;h++){buildTab(h);}
