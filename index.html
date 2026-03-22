@@ -95,7 +95,7 @@ h1 .s{color:var(--accent-s);}h1 .m{color:var(--accent-m);}
 
 <script>
 const S_TREE=[{sex:'♂',a:'col-a',c:'col-c',e:'col-e-green',eL:'G',g:'col-g-green',gL:'D',i:'col-i-green',iL:'A'},{sex:'♀',a:'col-a',c:'col-c',e:'col-e-green',eL:null,g:'col-g-green',gL:null,i:'col-i-green',iL:null},{sex:'♂',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:'E',i:'col-i-blue',iL:'B'},{sex:'♀',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:null,i:'col-i-blue',iL:null},{sex:'♂',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:'F',i:'col-i-yellow',iL:'C'},{sex:'♀',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:null,i:'col-i-yellow',iL:null}];
-const S_ROWS=[{lb:['','','','父'],sym:'G①',bt:'sg',tk:null,ro:true},{lb:['','','父','父'],sym:'G',bt:'',tk:{r:0,c:'e'}},{lb:['','父','父','父'],sym:'',bt:'',tk:null},{lb:['父','父','父','父'],sym:'',bt:'',tk:null},{lb:['父','父','母','父'],sym:'',bt:'sb',tk:null},{lb:['','父','母','父'],sym:'D',bt:'sg',tk:{r:0,c:'g'}},{lb:['父','母','父','父'],sym:'',bt:'',tk:null},{lb:['父','母','母','父'],sym:'A',bt:'sb',tk:{r:0,c:'i'}},{lb:['','','母','父'],sym:'E①',bt:'sg',tk:null,ro:true},{lb:['','母','父','父'],sym:'E',bt:'',tk:{r:2,c:'g'}},{lb:['母','父','父','父'],sym:'',bt:'',tk:null},{lb:['母','父','母','父'],sym:'B',bt:'sb',tk:{r:2,c:'i'}},{lb:['','母','母','父'],sym:'F',bt:'sg',tk:{r:4,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:'',tk:null},{lb:['母','母','母','父'],sym:'C',bt:'sb',tk:{r:4,c:'i'}}];
+const S_ROWS=[{lb:['','','','父'],sym:'G①',bt:'sg',tk:null},{lb:['','','父','父'],sym:'G',bt:'',tk:{r:0,c:'e'}},{lb:['','父','父','父'],sym:'',bt:'',tk:null},{lb:['父','父','父','父'],sym:'',bt:'',tk:null},{lb:['父','父','母','父'],sym:'',bt:'sb',tk:null},{lb:['','父','母','父'],sym:'D',bt:'sg',tk:{r:0,c:'g'}},{lb:['父','母','父','父'],sym:'',bt:'',tk:null},{lb:['父','母','母','父'],sym:'A',bt:'sb',tk:{r:0,c:'i'}},{lb:['','','母','父'],sym:'E①',bt:'sg',tk:null},{lb:['','母','父','父'],sym:'E',bt:'',tk:{r:2,c:'e'}},{lb:['母','父','父','父'],sym:'',bt:'',tk:null},{lb:['母','父','母','父'],sym:'B',bt:'sb',tk:{r:2,c:'i'}},{lb:['','母','母','父'],sym:'F',bt:'sg',tk:{r:4,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:'',tk:null},{lb:['母','母','母','父'],sym:'C',bt:'sb',tk:{r:4,c:'i'}}];
 const M_TREE=[{sex:'♂',a:'col-a',c:'col-c',e:'col-e-green',eL:'g',g:'col-g-green',gL:'d',i:'col-i-green',iL:'a'},{sex:'♀',a:'col-a',c:'col-c',e:'col-e-green',eL:null,g:'col-g-green',gL:null,i:'col-i-green',iL:null},{sex:'♂',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:'e',i:'col-i-blue',iL:'b'},{sex:'♀',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:null,i:'col-i-blue',iL:null},{sex:'♂',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:'f',i:'col-i-yellow',iL:'c'},{sex:'♀',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:null,i:'col-i-yellow',iL:null},{sex:'♂',a:null,c:'col-c-purple',e:'col-e-orange',eL:'い',g:'col-g-pink',gL:'あ',i:null,iL:null},{sex:'♀',a:null,c:'col-c-purple',e:'col-e-orange',eL:null,g:'col-g-pink',gL:null,i:null,iL:null}];
 const M1=[{lb:['','','','父'],sym:'g①',bt:'m1g',auto:true,tk:{r:0,c:'e'}},{lb:['','','父','父'],sym:'g',bt:'',auto:true,tk:{r:0,c:'e'}},{lb:['','父','父','父'],sym:'●',bt:'',auto:false},{lb:['父','父','父','父'],sym:'',bt:'',auto:false},{lb:['父','父','母','父'],sym:'',bt:'m1b',auto:false},{lb:['','父','母','父'],sym:'d',bt:'m1g',auto:true,tk:{r:0,c:'g'}},{lb:['父','母','父','父'],sym:'',bt:'',auto:false},{lb:['父','母','母','父'],sym:'a',bt:'m1b',auto:true,tk:{r:0,c:'i'}},{lb:['','','母','父'],sym:'e①',bt:'m1g',auto:true,tk:{r:2,c:'g'}},{lb:['','母','父','父'],sym:'e',bt:'',auto:true,tk:{r:2,c:'g'}},{lb:['母','父','父','父'],sym:'',bt:'',auto:false},{lb:['母','父','母','父'],sym:'b',bt:'m1b',auto:true,tk:{r:2,c:'i'}},{lb:['','母','母','父'],sym:'f',bt:'m1g',auto:true,tk:{r:4,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:'',auto:false},{lb:['母','母','母','父'],sym:'c',bt:'m1b',auto:true,tk:{r:4,c:'i'}}];
 const M2=[{lb:['','','','父'],sym:'う',bt:'m2p',auto:true,tk:{r:6,c:'c'}},{lb:['','','父','父'],sym:'▲',bt:'',auto:false},{lb:['','父','父','父'],sym:'■',bt:'',auto:false},{lb:['父','父','父','父'],sym:'',bt:'',auto:false},{lb:['父','父','母','父'],sym:'',bt:'',auto:false},{lb:['','父','母','父'],sym:'△',bt:'m2p',auto:false},{lb:['父','母','父','父'],sym:'',bt:'',auto:false},{lb:['父','母','母','父'],sym:'',bt:'',auto:false},{lb:['','','母','父'],sym:'い',bt:'m2p',auto:true,tk:{r:6,c:'e'}},{lb:['','母','父','父'],sym:'□',bt:'',auto:false},{lb:['母','父','父','父'],sym:'',bt:'',auto:false},{lb:['母','父','母','父'],sym:'',bt:'',auto:false},{lb:['','母','母','父'],sym:'あ',bt:'m2p',auto:true,tk:{r:6,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:'',auto:false},{lb:['母','母','母','父'],sym:'',bt:'',auto:false}];
@@ -126,8 +126,8 @@ function mkMtx(h,rows,sec,fn,ro){
   rows.forEach(function(row,i){
     var bt=row.bt||''; o+='<tr class="'+bt+'">';
     row.lb.forEach(function(l){o+=l===''?'<td class="cell-off"></td>':'<td class="label-cell">'+l+'</td>';});
-    var ror=ro?' readonly':''; var extra=(sec==='sdt'&&(i===1||i===9))?';syncSGE('+h+')':'';
-    o+='<td class="input-cell"><input type="text" id="'+xid(h,sec,i,'nm')+'" placeholder="'+(row.sym||'馬名')+'"'+ror+' oninput="'+fn+'('+h+',\''+sec+'\','+i+')'+extra+'"></td>';
+    var ror=ro?' readonly':'';
+    o+='<td class="input-cell"><input type="text" id="'+xid(h,sec,i,'nm')+'" placeholder="'+(row.sym||'馬名')+'"'+ror+' oninput="'+fn+'('+h+',\''+sec+'\','+i+')"></td>';
     for(var f=1;f<=3;f++)o+='<td class="input-cell"><input type="text" id="'+xid(h,sec,i,'f'+f)+'"'+ror+' oninput="'+fn+'('+h+',\''+sec+'\','+i+')"></td>';
     var bc=bt?' bc':'';
     o+='<td class="input-cell'+bc+'"><input type="text" id="'+xid(h,sec,i,'bl')+'"'+ror+' oninput="'+fn+'('+h+',\''+sec+'\','+i+')"></td></tr>';
@@ -177,17 +177,20 @@ function switchTab(idx){for(var i=0;i<N;i++){document.getElementById('tbtn'+i).c
 
 function sTr(h,tr,col){
   var val=document.getElementById(xid(h,'str',tr,col)).value||'';
-  S_ROWS.forEach(function(row,i){if(row.tk&&row.tk.r===tr&&row.tk.c===col){var el=document.getElementById(xid(h,'sdt',i,'nm'));if(el)el.value=val;}});
+  var targetLabel = S_TREE[tr][col + 'L'];
+  if(targetLabel) {
+    var base = targetLabel.replace(/[①②]/g, '');
+    S_ROWS.forEach(function(row, i){
+      if(row.sym && row.sym.replace(/[①②]/g, '') === base) {
+        var el = document.getElementById(xid(h, 'sdt', i, 'nm'));
+        if(el) { el.value = val ? val + sfx(row.sym) : ''; }
+      }
+    });
+  }
   sUpd(h);
 }
 
-function sMx(h,sec,ri){syncSGE(h);sUpd(h);}
-
-function syncSGE(h){
-  var gNm=(document.getElementById(xid(h,'sdt',1,'nm'))||{}).value||'';
-  var g1Nm=document.getElementById(xid(h,'sdt',0,'nm'));
-  if(g1Nm)g1Nm.value=gNm?gNm+'①':'';
-}
+function sMx(h,sec,ri){sUpd(h);}
 
 function sUpd(h){
   var cnt={};FACTORS.forEach(function(f){cnt[f]=0;});
