@@ -58,17 +58,16 @@ h1 .s{color:var(--accent-s);}h1 .m{color:var(--accent-m);}
 .m1g td.bc{background:var(--m1g-bg)!important;}.m1g td.bc input{color:var(--m1g);font-weight:600;}
 .m1b td.bc{background:var(--m1b-bg)!important;}.m1b td.bc input{color:var(--m1b);font-weight:600;}
 .m2p td.bc{background:var(--m2p-bg)!important;}.m2p td.bc input{color:var(--m2p);font-weight:600;}
-.factor-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.factor-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px; margin-bottom:10px;}
 .fc{background:var(--card);border:1px solid #ccc;border-radius:8px;padding:5px 12px;text-align:center;min-width:46px;}
 .fc .fl{font-size:.62rem;color:var(--muted);display:block;}
 .fc .fv{font-size:1.1rem;font-weight:700;}
 .fc.s .fv{color:var(--accent-s);}.fc.m .fv{color:var(--accent-m);}.fc.fin .fv{color:#333;}
 .blood-box{border-radius:8px;padding:8px 10px;margin-top:6px;}
-.bb-sg{background:var(--s-green-bg);border:1px solid #90c890;}
-.bb-sb{background:var(--s-blue-bg);border:1px solid #90b8d8;}
-.bb-mg{background:var(--m1g-bg);border:1px solid #a0d8a0;}
-.bb-mb{background:var(--m1b-bg);border:1px solid #a0c8e8;}
-.bb-mp{background:var(--m2p-bg);border:1px solid #e090c0;}
+.bb-mg{background:var(--m1g-bg);border:1px solid #a0d8a0;} /* 薄緑:面白い */
+.bb-mb{background:var(--m1b-bg);border:1px solid #a0c8e8;} /* 薄水色:見事 */
+.bb-mp{background:var(--m2p-bg);border:1px solid #e090c0;} /* ピンク:面白見事 */
+.bb-ms{background:var(--m3s-bg);border:1px solid #e09080;} /* サーモンピンク:面白見事(肌馬) */
 .btags{display:flex;flex-wrap:wrap;gap:3px;min-height:20px;}
 .btag{border-radius:4px;padding:2px 7px;font-size:.7rem;background:rgba(255,255,255,0.5);border:1px solid rgba(0,0,0,0.1);}
 </style>
@@ -88,9 +87,9 @@ h1 .s{color:var(--accent-s);}h1 .m{color:var(--accent-m);}
 
 <script>
 const S_TREE=[{sex:'♂',a:'col-a',c:'col-c',e:'col-e-green',eL:'G',g:'col-g-green',gL:'D',i:'col-i-green',iL:'A'},{sex:'♀',a:'col-a',c:'col-c',e:'col-e-green',eL:null,g:'col-g-green',gL:null,i:'col-i-green',iL:null},{sex:'♂',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:'E',i:'col-i-blue',iL:'B'},{sex:'♀',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:null,i:'col-i-blue',iL:null},{sex:'♂',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:'F',i:'col-i-yellow',iL:'C'},{sex:'♀',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:null,i:'col-i-yellow',iL:null}];
-const S_ROWS=[{lb:['','','','父'],sym:'G①',bt:'sg',tk:{r:0,c:'e'}},{lb:['','','父','父'],sym:'G',bt:'',tk:{r:0,c:'e'}},{lb:['','父','父','父'],sym:'',bt:'',tk:null},{lb:['父','父','父','父'],sym:'',bt:'',tk:null},{lb:['父','父','母','父'],sym:'',bt:'sb',tk:null},{lb:['','父','母','父'],sym:'D',bt:'sg',tk:{r:0,c:'g'}},{lb:['父','母','父','父'],sym:'',bt:'',tk:null},{lb:['父','母','母','父'],sym:'A',bt:'sb',tk:{r:0,c:'i'}},{lb:['','','母','父'],sym:'E①',bt:'sg',tk:{r:2,c:'e'}},{lb:['','母','父','父'],sym:'E',bt:'',tk:{r:2,c:'e'}},{lb:['母','父','父','父'],sym:'',bt:'',tk:null},{lb:['母','父','母','父'],sym:'B',bt:'sb',tk:{r:2,c:'i'}},{lb:['','母','母','父'],sym:'F',bt:'sg',tk:{r:4,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:'',tk:null},{lb:['母','母','母','父'],sym:'C',bt:'sb',tk:{r:4,c:'i'}}];
-const M1_ROWS=[{lb:['','','','父'],sym:'g①',bt:'m1g',tk:{r:0,c:'e'}},{lb:['','','父','父'],sym:'g',bt:'',tk:{r:0,c:'e'}},{lb:['','父','父','父'],sym:'●',bt:''},{lb:['父','父','父','父'],sym:'',bt:''},{lb:['父','父','母','父'],sym:'',bt:'m1b'},{lb:['','父','母','父'],sym:'d',bt:'m1g',tk:{r:0,c:'g'}},{lb:['父','母','父','父'],sym:'',bt:''},{lb:['父','母','母','父'],sym:'a',bt:'m1b',tk:{r:0,c:'i'}},{lb:['','','母','父'],sym:'e①',bt:'m1g',tk:{r:2,c:'e'}},{lb:['','母','父','父'],sym:'e',bt:'',tk:{r:2,c:'e'}},{lb:['母','父','父','父'],sym:'',bt:''},{lb:['母','父','母','父'],sym:'b',bt:'m1b',tk:{r:2,c:'i'}},{lb:['','母','母','父'],sym:'f',bt:'m1g',tk:{r:4,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:''},{lb:['母','母','母','父'],sym:'c',bt:'m1b',tk:{r:4,c:'i'}}];
-const M2_ROWS=[{lb:['','','','父'],sym:'う',bt:'m2p',tk:{r:6,c:'c'}},{lb:['','','父','父'],sym:'▲',bt:''},{lb:['','父','父','父'],sym:'■',bt:''},{lb:['父','父','父','父'],sym:'',bt:''},{lb:['父','父','母','父'],sym:'',bt:''},{lb:['','父','母','父'],sym:'△',bt:'m2p'},{lb:['父','母','父','父'],sym:'',bt:''},{lb:['父','母','母','父'],sym:'',bt:''},{lb:['','','母','父'],sym:'い',bt:'m2p',tk:{r:6,c:'e'}},{lb:['','母','父','父'],sym:'□',bt:''},{lb:['母','父','父','父'],sym:'',bt:''},{lb:['母','父','母','父'],sym:'',bt:''},{lb:['','母','母','父'],sym:'あ',bt:'m2p',tk:{r:6,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:''},{lb:['母','母','母','父'],sym:'',bt:''}];
+const S_ROWS=[{lb:['','','','父'],sym:'G①',bt:'',tk:{r:0,c:'e'}},{lb:['','','父','父'],sym:'G',bt:'',tk:{r:0,c:'e'}},{lb:['','父','父','父'],sym:'',bt:'',tk:null},{lb:['父','父','父','父'],sym:'',bt:'',tk:null},{lb:['父','父','母','父'],sym:'',bt:'',tk:null},{lb:['','父','母','父'],sym:'D',bt:'',tk:{r:0,c:'g'}},{lb:['父','母','父','父'],sym:'',bt:'',tk:null},{lb:['父','母','母','父'],sym:'A',bt:'',tk:{r:0,c:'i'}},{lb:['','','母','父'],sym:'E①',bt:'',tk:{r:2,c:'e'}},{lb:['','母','父','父'],sym:'E',bt:'',tk:{r:2,c:'e'}},{lb:['母','父','父','父'],sym:'',bt:'',tk:null},{lb:['母','父','母','父'],sym:'B',bt:'',tk:{r:2,c:'i'}},{lb:['','母','母','父'],sym:'F',bt:'',tk:{r:4,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:'',tk:null},{lb:['母','母','母','父'],sym:'C',bt:'',tk:{r:4,c:'i'}}];
+const M1_ROWS=[{lb:['','','','父'],sym:'g①',bt:'m2p',tk:{r:0,c:'e'}},{lb:['','','父','父'],sym:'g',bt:'',tk:{r:0,c:'e'}},{lb:['','父','父','父'],sym:'●',bt:''},{lb:['父','父','父','父'],sym:'',bt:''},{lb:['父','父','母','父'],sym:'',bt:''},{lb:['','父','母','父'],sym:'d',bt:'',tk:{r:0,c:'g'}},{lb:['父','母','父','父'],sym:'',bt:''},{lb:['父','母','母','父'],sym:'a',bt:'',tk:{r:0,c:'i'}},{lb:['','','母','父'],sym:'e①',bt:'',tk:{r:2,c:'e'}},{lb:['','母','父','父'],sym:'e',bt:'',tk:{r:2,c:'e'}},{lb:['母','父','父','父'],sym:'',bt:''},{lb:['母','父','母','父'],sym:'b',bt:'',tk:{r:2,c:'i'}},{lb:['','母','母','父'],sym:'f',bt:'',tk:{r:4,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:''},{lb:['母','母','母','父'],sym:'c',bt:'',tk:{r:4,c:'i'}}];
+const M2_ROWS=[{lb:['','','','父'],sym:'う',bt:'m1g',tk:{r:6,c:'c'}},{lb:['','','父','父'],sym:'▲',bt:''},{lb:['','父','父','父'],sym:'■',bt:''},{lb:['父','父','父','父'],sym:'',bt:''},{lb:['父','父','母','父'],sym:'',bt:''},{lb:['','父','母','父'],sym:'△',bt:'m1g'},{lb:['父','母','父','父'],sym:'',bt:''},{lb:['父','母','母','父'],sym:'',bt:''},{lb:['','','母','父'],sym:'い',bt:'m1b',tk:{r:6,c:'e'}},{lb:['','母','父','父'],sym:'□',bt:''},{lb:['母','父','父','父'],sym:'',bt:''},{lb:['母','父','母','父'],sym:'',bt:''},{lb:['','母','母','父'],sym:'あ',bt:'m1b',tk:{r:6,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:''},{lb:['母','母','母','父'],sym:'',bt:''}];
 const M3_ROWS=[{lb:['','','','父'],sym:'g②',src:'m1_0'},{lb:['','','父','父'],sym:'g①',src:'m1_0'},{lb:['','父','父','父'],sym:'g',src:'m1_1'},{lb:['父','父','父','父'],sym:'●',src:'m1_2'},{lb:['父','父','母','父'],sym:'d',src:'m1_5'},{lb:['','父','母','父'],sym:'e①',src:'m1_8'},{lb:['父','母','父','父'],sym:'e',src:'m1_9'},{lb:['父','母','母','父'],sym:'f',src:'m1_12'},{lb:['','','母','父'],sym:'う',src:'m2_0'},{lb:['','母','父','父'],sym:'▲',src:'m2_1'},{lb:['母','父','父','父'],sym:'■',src:'m2_2'},{lb:['母','父','母','父'],sym:'△',src:'m2_5'},{lb:['','母','母','父'],sym:'い',src:'m2_8'},{lb:['母','母','父','父'],sym:'□',src:'m2_9'},{lb:['母','母','母','父'],sym:'あ',src:'m2_12'}];
 const FACTORS=['速','長','短','中','走'];const N=4;
 
@@ -131,28 +130,26 @@ function buildTab(h){
   html+='<div class="horse-header stallion"> 牡馬 '+(h+1)+'</div>';
   html+='<div class="section-card"><div class="section-title s">掛け合わせ</div>'+mkTree(h,S_TREE,'s','sTr')+'</div>';
   html+='<div class="section-card"><div class="section-title s">種馬</div>'+mkMtx(h,S_ROWS,'sdt','sMx',false)+'</div>';
-  html+='<div class="section-card"><div class="section-title s">牡馬因子の合計</div><div class="factor-row">';
-  FACTORS.forEach(f=>{html+='<div class="fc s"><span class="fl">'+f+'</span><span class="fv" id="fc_'+h+'_s_'+f+'">0</span></div>';});
-  html+='</div></div><div class="section-card"><div class="section-title s">血統まとめ</div><div id="bsg_'+h+'" class="bb-sg blood-box"><div class="bb-title">面白い</div><div class="btags"></div></div><div id="bsb_'+h+'" class="bb-sb blood-box"><div class="bb-title">見事</div><div class="btags"></div></div></div>';
   
-  html+='<div class="horse-header mare" style="margin-top:12px"> 牝馬 '+(h+1)+'</div>';
-  html+='<div class="section-card"><div class="section-title m">掛け合わせ</div>'+mkTree(h,M_TREE=[{sex:'♂',a:'col-a',c:'col-c',e:'col-e-green',eL:'g',g:'col-g-green',gL:'d',i:'col-i-green',iL:'a'},{sex:'♀',a:'col-a',c:'col-c',e:'col-e-green',eL:null,g:'col-g-green',gL:null,i:'col-i-green',iL:null},{sex:'♂',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:'e',i:'col-i-blue',iL:'b'},{sex:'♀',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:null,i:'col-i-blue',iL:null},{sex:'♂',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:'f',i:'col-i-yellow',iL:'c'},{sex:'♀',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:null,i:'col-i-yellow',iL:null},{sex:'♂',a:null,c:'col-c-purple',e:'col-e-orange',eL:'い',g:'col-g-pink',gL:'あ',i:null,iL:null},{sex:'♀',a:null,c:'col-c-purple',e:'col-e-orange',eL:null,g:'col-g-pink',gL:null,i:null,iL:null}],'m','mTr')+'</div>';
-  
-  html+='<div class="section-card"><div class="section-title m">肌種馬</div>'+mkMtx(h,M1_ROWS,'m1','mMx',false)+'</div>';
-  html+='<div class="section-card"><div class="section-title m">肌肌馬</div>'+mkMtx(h,M2_ROWS,'m2','mMx',false)+'</div>';
-  
-  html+='<div class="section-card"><div class="section-title m">血統まとめ</div>';
-  html+='<div id="bmp_'+h+'" class="bb-mp blood-box"><div class="bb-title">面白見事 (肌種馬)</div><div class="btags"></div></div>';
-  html+='<div id="bmg_'+h+'" class="bb-mg blood-box"><div class="bb-title">面白い (肌肌馬)</div><div class="btags"></div></div>';
-  html+='<div id="bmb_'+h+'" class="bb-mb blood-box"><div class="bb-title">見事 (肌肌馬)</div><div class="btags"></div></div>';
+  // 牡馬セクションに集約（因子合計と血統まとめ）
+  html+='<div class="section-card">';
+  html+='<div class="section-title s">因子の合計（牡馬・牝馬・最終）</div>';
+  html+='<div class="factor-row">'; FACTORS.forEach(f=>{html+='<div class="fc s"><span class="fl">'+f+'(牡)</span><span class="fv" id="fc_'+h+'_s_'+f+'">0</span></div>';}); html+='</div>';
+  html+='<div class="factor-row">'; FACTORS.forEach(f=>{html+='<div class="fc m"><span class="fl">'+f+'(牝)</span><span class="fv" id="fc_'+h+'_m_'+f+'">0</span></div>';}); html+='</div>';
+  html+='<div class="factor-row">'; FACTORS.forEach(f=>{html+='<div class="fc fin"><span class="fl">'+f+'(最)</span><span class="fv" id="fc_'+h+'_fin_'+f+'">0</span></div>';}); html+='</div>';
   html+='</div>';
 
-  html+='<div class="section-card"><div class="section-title m">牝馬因子の合計</div><div class="factor-row">';
-  FACTORS.forEach(f=>{html+='<div class="fc m"><span class="fl">'+f+'</span><span class="fv" id="fc_'+h+'_m_'+f+'">0</span></div>';});
-  html+='</div></div><div class="section-card"><div class="section-title m">最終合計</div><div class="factor-row">';
-  FACTORS.forEach(f=>{html+='<div class="fc fin"><span class="fl">'+f+'</span><span class="fv" id="fc_'+h+'_fin_'+f+'">0</span></div>';});
-  html+='</div></div>';
+  html+='<div class="section-card"><div class="section-title s">血統まとめ</div>';
+  html+='<div id="bmg_'+h+'" class="bb-mg blood-box"><div class="bb-title">面白い血統 (肌肌馬：薄緑)</div><div class="btags"></div></div>';
+  html+='<div id="bmb_'+h+'" class="bb-mb blood-box"><div class="bb-title">見事な血統 (肌肌馬：薄水色)</div><div class="btags"></div></div>';
+  html+='<div id="bmp_'+h+'" class="bb-mp blood-box"><div class="bb-title">面白見事な血統 (肌種馬：ピンク)</div><div class="btags"></div></div>';
+  html+='<div id="bms_'+h+'" class="bb-ms blood-box"><div class="bb-title">面白見事な血統 (肌馬：サーモンピンク)</div><div class="btags"></div></div>';
+  html+='</div>';
   
+  html+='<div class="horse-header mare" style="margin-top:12px"> 牝馬 '+(h+1)+'</div>';
+  html+='<div class="section-card"><div class="section-title m">掛け合わせ</div>'+mkTree(h,M_TREE,'m','mTr')+'</div>';
+  html+='<div class="section-card"><div class="section-title m">肌種馬</div>'+mkMtx(h,M1_ROWS,'m1','mMx',false)+'</div>';
+  html+='<div class="section-card"><div class="section-title m">肌肌馬</div>'+mkMtx(h,M2_ROWS,'m2','mMx',false)+'</div>';
   html+='<div class="section-card"><div class="section-title m">肌馬</div>'+mkMtx(h,M3_ROWS,'m3','mMx',true)+'</div>';
   
   document.getElementById('tab'+h).innerHTML=html;
@@ -160,7 +157,7 @@ function buildTab(h){
 
 function sTr(h,tr,col){
   var val=document.getElementById(xid(h,'str',tr,col)).value||'';
-  S_ROWS.forEach((row,i)=>{ if(row.tk&&row.tk.r===tr&&row.tk.c===col) syncGroup(h,'sdt',S_ROWS[i].sym,val,'nm'); });
+  S_ROWS.forEach((row,i)=>{ if(row.tk&&row.tk.r===tr&&row.tk.c===col) syncGroup(h,'sdt',row.sym,val,'nm'); });
   sUpd(h);
 }
 function sMx(h,sec,ri,ctype){ syncGroup(h,sec,S_ROWS[ri].sym,document.getElementById(xid(h,sec,ri,ctype)).value,ctype); sUpd(h); }
@@ -171,15 +168,22 @@ function mTr(h,tr,col){
   M2_ROWS.forEach((row,i)=>{ if(row.tk&&row.tk.r===tr&&row.tk.c===col) syncGroup(h,'m2',row.sym,val,'nm'); });
   mUpd(h);
 }
-function mMx(h,sec,ri,ctype){ syncGroup(h,sec,(sec==='m1'?M1_ROWS:M2_ROWS)[ri].sym,document.getElementById(xid(h,sec,ri,ctype)).value,ctype); mUpd(h); }
+function mMx(h,sec,ri,ctype){ 
+  const rows = (sec==='m1'?M1_ROWS:M2_ROWS);
+  syncGroup(h,sec,rows[ri].sym,document.getElementById(xid(h,sec,ri,ctype)).value,ctype); mUpd(h); 
+}
 
 function syncGroup(h,sec,sym,val,ctype){
-  if(!sym)return; const baseSym=clean(sym), baseVal=clean(val), rows=(sec==='sdt'?S_ROWS:(sec==='m1'?M1_ROWS:M2_ROWS));
-  rows.forEach((r,i)=>{
-    if(clean(r.sym)===baseSym){
-      let tVal=val; if(ctype==='nm'&&val!==''){ const sfx=getSfx(r.sym); if(sfx&&!val.includes(sfx)) tVal=baseVal+sfx; }
-      var el=document.getElementById(xid(h,sec,i,ctype)); if(el)el.value=tVal;
-    }
+  if(!sym)return; const baseSym=clean(sym), baseVal=clean(val);
+  const sections = ['sdt','m1','m2'];
+  sections.forEach(s=>{
+    const rows=(s==='sdt'?S_ROWS:(s==='m1'?M1_ROWS:M2_ROWS));
+    rows.forEach((r,i)=>{
+      if(clean(r.sym)===baseSym){
+        let tVal=val; if(ctype==='nm'&&val!==''){ const sfx=getSfx(r.sym); if(sfx&&!val.includes(sfx)) tVal=baseVal+sfx; }
+        var el=document.getElementById(xid(h,s,i,ctype)); if(el)el.value=tVal;
+      }
+    });
   });
 }
 
@@ -187,7 +191,7 @@ function sUpd(h){
   var cnt={}; FACTORS.forEach(f=>cnt[f]=0);
   S_ROWS.forEach((_,i)=>{ for(var f=1;f<=3;f++){ var v=document.getElementById(xid(h,'sdt',i,'f'+f)).value.trim(); if(cnt.hasOwnProperty(v))cnt[v]++; }});
   FACTORS.forEach(f=>document.getElementById('fc_'+h+'_s_'+f).textContent=cnt[f]);
-  setB(h,'bsg','sg',S_ROWS,'sdt'); setB(h,'bsb','sb',S_ROWS,'sdt'); finUpd(h);
+  finUpd(h);
 }
 
 function mUpd(h){
@@ -198,11 +202,26 @@ function mUpd(h){
   var cnt={}; FACTORS.forEach(f=>cnt[f]=0);
   M3_ROWS.forEach((_,i)=>{ for(var f=1;f<=3;f++){ var v=document.getElementById(xid(h,'m3',i,'f'+f)).value.trim(); if(cnt.hasOwnProperty(v))cnt[v]++; }});
   FACTORS.forEach(f=>document.getElementById('fc_'+h+'_m_'+f).textContent=cnt[f]);
-  setB(h,'bmp','m2p',M1_ROWS,'m1'); setB(h,'bmg','m1g',M2_ROWS,'m2'); setB(h,'bmb','m1b',M2_ROWS,'m2');
+  
+  // 血統まとめの反映（牡馬セクションにあるボックスへ）
+  setB(h,'bmp','m2p',M1_ROWS,'m1'); // ピンク:肌種馬
+  setB(h,'bmg','m1g',M2_ROWS,'m2'); // 薄緑:肌肌馬(面白い)
+  setB(h,'bmb','m1b',M2_ROWS,'m2'); // 薄水色:肌肌馬(見事)
+  
+  // 肌馬(m3)の「面白見事」判定（g②, e①, う, い, あ などの特定の行の血統を集約）
+  const m3_ms_indices = [0, 5, 8, 12, 14]; // 特定の重要位置
+  var arr=[]; m3_ms_indices.forEach(idx=>{ var v=document.getElementById(xid(h,'m3',idx,'bl')).value.trim(); if(v)arr.push(v); });
+  document.getElementById('bms_'+h).querySelector('.btags').innerHTML=arr.map(a=>'<span class="btag">'+a+'</span>').join('');
+
   finUpd(h);
 }
 
-function finUpd(h){ FACTORS.forEach(f=>{ var s=parseInt(document.getElementById('fc_'+h+'_s_'+f).textContent), m=parseInt(document.getElementById('fc_'+h+'_m_'+f).textContent); document.getElementById('fc_'+h+'_fin_'+f).textContent=s+m; });}
+function finUpd(h){ FACTORS.forEach(f=>{ 
+  var s=parseInt(document.getElementById('fc_'+h+'_s_'+f).textContent)||0; 
+  var m=parseInt(document.getElementById('fc_'+h+'_m_'+f).textContent)||0; 
+  document.getElementById('fc_'+h+'_fin_'+f).textContent=s+m; 
+});}
+
 function setB(h,id,bt,rows,sec){ var arr=[]; rows.forEach((r,i)=>{ if(r.bt===bt){ var v=document.getElementById(xid(h,sec,i,'bl')).value.trim(); if(v)arr.push(v); }}); document.getElementById(id+'_'+h).querySelector('.btags').innerHTML=arr.map(a=>'<span class="btag">'+a+'</span>').join(''); }
 function clearTab(h){ document.getElementById('tab'+h).querySelectorAll('input').forEach(i=>i.value=''); sUpd(h); mUpd(h); }
 function switchTab(idx){ for(var i=0;i<N;i++){ document.getElementById('tbtn'+i).classList.toggle('active',i===idx); document.getElementById('tab'+i).classList.toggle('active',i===idx); } }
