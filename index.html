@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>血統メモ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+:root {
+  --bg:#f5f5f5;--surface:#fff;--card:#e8edf5;--text:#1a1a1a;--muted:#666e7a;
+  --border:#d0d8e4;--disabled:#d8d8d8;
+  --accent-s:#c0392b;--accent-m:#a0369a;
+  --s-green:#2d7a2d;--s-green-bg:#d6f0d6;
+  --s-blue:#1a5a7a;--s-blue-bg:#cce6f4;
+  --m1g:#5a9a5a;--m1g-bg:#edf8ed;
+  --m1b:#3a7a9a;--m1b-bg:#e8f4ff;
+  --m2p:#b03080;--m2p-bg:#fce8f8;
+  --m3s:#c05030;--m3s-bg:#fadadd;
+  --tree-purple:#c8c0e8;--tree-dkgreen:#4caf50;
+  --tree-e-green:#7dd87a;--tree-g-green:#b8e8b0;
+  --tree-e-blue:#7ac8e8;--tree-g-blue:#b0d8f0;--tree-g-yellow:#f0e0a0;
+  --tree-i-green:#daf0da;--tree-i-blue:#daeef8;--tree-i-yellow:#f8f0d0;
+  --tree-purple2:#b090e0;--tree-orange:#f8c080;--tree-pink:#f8b0d0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);padding:10px;}
+h1{text-align:center;font-size:1.2rem;font-weight:700;letter-spacing:.1em;margin-bottom:14px;padding-bottom:8px;border-bottom:3px solid var(--border);}
+h1 .s{color:var(--accent-s);}h1 .m{color:var(--accent-m);}
+.tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;}
+.tab-btn{flex-shrink:0;padding:7px 18px;border:1px solid var(--border);background:var(--surface);color:var(--muted);border-radius:20px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:500;}
+.tab-btn.active{background:#555;color:#fff;border-color:#555;font-weight:700;}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+.horse-header{text-align:center;font-size:1rem;font-weight:700;padding:10px;border-radius:10px;margin-bottom:10px;color:#fff;}
+.horse-header.stallion{background:var(--accent-s);}
+.horse-header.mare{background:var(--accent-m);}
+.section-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:10px;}
+.section-title{font-size:.75rem;font-weight:700;color:var(--muted);letter-spacing:.1em;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
+.section-title.s{color:var(--accent-s);}.section-title.m{color:var(--accent-m);}
+.clear-btn{width:100%;padding:10px;background:#e74c3c;color:#fff;border:none;border-radius:8px;font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer;margin-bottom:12px;}
+.clear-btn:active{opacity:.8;}
+.tree-wrap{overflow-x:auto;}
+.tree-table{border-collapse:collapse;font-size:.74rem;min-width:500px;}
+.tree-table td{border:1px solid #bbb;padding:0;height:28px;position:relative;}
+.tree-sex{text-align:center;font-size:.7rem;color:var(--muted);background:var(--card);width:18px;min-width:18px;}
+.tree-table input{width:100%;height:100%;border:none;background:transparent;font-family:inherit;font-size:.72rem;padding:2px 4px 2px 15px;color:var(--text);min-width:65px;}
+.tree-table input:focus{outline:2px solid #aaa;}
+.tree-lbl{position:absolute;top:2px;left:2px;font-size:.55rem;font-weight:700;color:rgba(0,0,0,.38);pointer-events:none;line-height:1;}
+.cell-disabled{background:var(--disabled)!important;}
+.col-a{background:var(--tree-purple);}.col-c{background:var(--tree-dkgreen);}
+.col-e-green{background:var(--tree-e-green);}.col-e-blue{background:var(--tree-e-blue);}
+.col-g-green{background:var(--tree-g-green);}.col-g-blue{background:var(--tree-g-blue);}.col-g-yellow{background:var(--tree-g-yellow);}
+.col-i-green{background:var(--tree-i-green);}.col-i-blue{background:var(--tree-i-blue);}.col-i-yellow{background:var(--tree-i-yellow);}
+.col-c-purple{background:var(--tree-purple2);}.col-e-orange{background:var(--tree-orange);}.col-g-pink{background:var(--tree-pink);}
+.pedigree-wrap{overflow-x:auto;}
+.pedigree-table{width:100%;border-collapse:collapse;font-size:.72rem;min-width:440px;}
+.pedigree-table th{background:var(--card);color:var(--muted);padding:4px;text-align:center;font-weight:600;font-size:.66rem;border:1px solid var(--border);}
+.pedigree-table td{border:1px solid var(--border);padding:0;height:25px;}
+.label-cell{background:var(--card);color:var(--muted);text-align:center;font-size:.66rem;padding:2px 3px;white-space:nowrap;min-width:22px;}
+.input-cell input{width:100%;height:100%;background:transparent;border:none;font-family:inherit;font-size:.7rem;padding:2px 4px;color:var(--text);}
+.input-cell input:focus{outline:1px solid #aaa;}
+.input-cell input[readonly]{background:transparent;color:var(--text);}
+.cell-off{background:var(--disabled);}
+.sg td.bc{background:var(--s-green-bg)!important;}.sg td.bc input{color:var(--s-green);font-weight:600;}
+.sb td.bc{background:var(--s-blue-bg)!important;}.sb td.bc input{color:var(--s-blue);font-weight:600;}
+.m1g td.bc{background:var(--m1g-bg)!important;}.m1g td.bc input{color:var(--m1g);font-weight:600;}
+.m1b td.bc{background:var(--m1b-bg)!important;}.m1b td.bc input{color:var(--m1b);font-weight:600;}
+.m2p td.bc{background:var(--m2p-bg)!important;}.m2p td.bc input{color:var(--m2p);font-weight:600;}
+.factor-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.fc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:5px 12px;text-align:center;min-width:46px;}
+.fc .fl{font-size:.62rem;color:var(--muted);display:block;}
+.fc .fv{font-size:1.1rem;font-weight:700;}
+.fc.s .fv{color:var(--accent-s);}.fc.m .fv{color:var(--accent-m);}.fc.fin .fv{color:#333;}
+.blood-box{border-radius:8px;padding:8px 10px;margin-top:6px;}
+.bb-sg{background:var(--s-green-bg);border:1px solid #90c890;}
+.bb-sb{background:var(--s-blue-bg);border:1px solid #90b8d8;}
+.bb-mg{background:var(--m1g-bg);border:1px solid #a0d8a0;}
+.bb-mb{background:var(--m1b-bg);border:1px solid #a0c8e8;}
+.bb-mp{background:var(--m2p-bg);border:1px solid #e090c0;}
+.bb-ms{background:var(--m3s-bg);border:1px solid #e09080;}
+.bb-title{font-size:.7rem;font-weight:700;margin-bottom:5px;}
+.bb-sg .bb-title{color:var(--s-green);}.bb-sb .bb-title{color:var(--s-blue);}
+.bb-mg .bb-title{color:var(--m1g);}.bb-mb .bb-title{color:var(--m1b);}
+.bb-mp .bb-title{color:var(--m2p);}.bb-ms .bb-title{color:var(--m3s);}
+.btags{display:flex;flex-wrap:wrap;gap:3px;min-height:20px;}
+.btag{border-radius:4px;padding:2px 7px;font-size:.7rem;background:rgba(0,0,0,.07);}
+.bb-sg .btag{color:var(--s-green);}.bb-sb .btag{color:var(--s-blue);}
+.bb-mg .btag{color:var(--m1g);}.bb-mb .btag{color:var(--m1b);}
+.bb-mp .btag{color:var(--m2p);}.bb-ms .btag{color:var(--m3s);}
+.empty-tag{color:var(--muted);font-size:.68rem;font-style:italic;}
+</style>
+</head>
+<body>
+<h1><span class="s">♂ 牡馬</span> × <span class="m">♀ 牝馬</span> 血統メモ</h1>
+<div class="tabs">
+  <button class="tab-btn active" id="tbtn0">馬 1</button>
+  <button class="tab-btn" id="tbtn1">馬 2</button>
+  <button class="tab-btn" id="tbtn2">馬 3</button>
+  <button class="tab-btn" id="tbtn3">馬 4</button>
+</div>
+<div id="tab0" class="tab-pane active"></div>
+<div id="tab1" class="tab-pane"></div>
+<div id="tab2" class="tab-pane"></div>
+<div id="tab3" class="tab-pane"></div>
+
+<script>
+const S_TREE=[
+  {sex:'♂',a:'col-a',c:'col-c',e:'col-e-green',eL:'G',g:'col-g-green',gL:'D',i:'col-i-green',iL:'A'},
+  {sex:'♀',a:'col-a',c:'col-c',e:'col-e-green',eL:null,g:'col-g-green',gL:null,i:'col-i-green',iL:null},
+  {sex:'♂',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:'E',i:'col-i-blue',iL:'B'},
+  {sex:'♀',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:null,i:'col-i-blue',iL:null},
+  {sex:'♂',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:'F',i:'col-i-yellow',iL:'C'},
+  {sex:'♀',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:null,i:'col-i-yellow',iL:null},
+];
+const S_ROWS=[
+  {lb:['','','','父'],sym:'G①',bt:'sg',tk:null, ro:true},
+  {lb:['','','父','父'],sym:'G',bt:'',  tk:{r:0,c:'e'}},
+  {lb:['','父','父','父'],sym:'',bt:'',tk:null},
+  {lb:['父','父','父','父'],sym:'',bt:'',tk:null},
+  {lb:['父','父','母','父'],sym:'',bt:'sb',tk:null},
+  {lb:['','父','母','父'],sym:'D',bt:'sg',tk:{r:0,c:'g'}},
+  {lb:['父','母','父','父'],sym:'',bt:'',tk:null},
+  {lb:['父','母','母','父'],sym:'A',bt:'sb',tk:{r:0,c:'i'}},
+  {lb:['','','母','父'],sym:'E①',bt:'sg',tk:null, ro:true},
+  {lb:['','母','父','父'],sym:'E',bt:'',  tk:{r:2,c:'g'}},
+  {lb:['母','父','父','父'],sym:'',bt:'',tk:null},
+  {lb:['母','父','母','父'],sym:'B',bt:'sb',tk:{r:2,c:'i'}},
+  {lb:['','母','母','父'],sym:'F',bt:'sg',tk:{r:4,c:'g'}},
+  {lb:['母','母','父','父'],sym:'',bt:'',tk:null},
+  {lb:['母','母','母','父'],sym:'C',bt:'sb',tk:{r:4,c:'i'}},
+];
+const M_TREE=[
+  {sex:'♂',a:'col-a',c:'col-c',e:'col-e-green',eL:'g',g:'col-g-green',gL:'d',i:'col-i-green',iL:'a'},
+  {sex:'♀',a:'col-a',c:'col-c',e:'col-e-green',eL:null,g:'col-g-green',gL:null,i:'col-i-green',iL:null},
+  {sex:'♂',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:'e',i:'col-i-blue',iL:'b'},
+  {sex:'♀',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:null,i:'col-i-blue',iL:null},
+  {sex:'♂',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:'f',i:'col-i-yellow',iL:'c'},
+  {sex:'♀',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:null,i:'col-i-yellow',iL:null},
+  {sex:'♂',a:null,c:'col-c-purple',e:'col-e-orange',eL:'い',g:'col-g-pink',gL:'あ',i:null,iL:null},
+  {sex:'♀',a:null,c:'col-c-purple',e:'col-e-orange',eL:null,g:'col-g-pink',gL:null,i:null,iL:null},
+];
+const M1=[
+  {lb:['','','','父'],sym:'g①',bt:'m1g',auto:true, tk:{r:0,c:'e'}, blsym:'×'},
+  {lb:['','','父','父'],sym:'g', bt:'',  auto:true, tk:{r:0,c:'e'}, blsym:'×'},
+  {lb:['','父','父','父'],sym:'●',bt:'',auto:false},
+  {lb:['父','父','父','父'],sym:'',bt:'',auto:false},
+  {lb:['父','父','母','父'],sym:'',bt:'m1b',auto:false},
+  {lb:['','父','母','父'],sym:'d',bt:'m1g',auto:true,tk:{r:0,c:'g'}},
+  {lb:['父','母','父','父'],sym:'',bt:'',auto:false},
+  {lb:['父','母','母','父'],sym:'a',bt:'m1b',auto:true,tk:{r:0,c:'i'}},
+  {lb:['','','母','父'],sym:'e①',bt:'m1g',auto:true,tk:{r:2,c:'g'}, blsym:'▼'},
+  {lb:['','母','父','父'],sym:'e', bt:'',  auto:true,tk:{r:2,c:'g'}, blsym:'▼'},
+  {l
