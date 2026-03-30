@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Horse Bloodline - 完動保存版</title>
+<title>My Horse Bloodline - データ保護版</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
 :root {
@@ -27,6 +27,13 @@
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text);padding:10px;}
 h1{text-align:center;font-size:1.2rem;font-weight:700;letter-spacing:.1em;margin-bottom:14px;padding-bottom:8px;border-bottom:3px solid var(--border);}
 h1 .s{color:var(--accent-s);}h1 .m{color:var(--accent-m);}
+
+/* ボタンエリア */
+.io-controls { display: flex; gap: 8px; margin-bottom: 12px; }
+.io-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.85rem; color: #fff; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.save-file { background: #27ae60; }
+.load-file { background: #2980b9; }
+
 .tabs{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px;}
 .tab-btn{flex-shrink:0;padding:7px 18px;border:1px solid #ccc;background:var(--surface);color:var(--muted);border-radius:20px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:500;}
 .tab-btn.active{background:#555;color:#fff;border-color:#555;font-weight:700;}
@@ -81,6 +88,13 @@ h1 .s{color:var(--accent-s);}h1 .m{color:var(--accent-m);}
 </head>
 <body>
 <h1><span class="s">♂ 牡馬</span> × <span class="m">♀ 牝馬</span> 血統メモ</h1>
+
+<div class="io-controls">
+  <button class="io-btn save-file" onclick="exportToFile()">💾 データ書き出し</button>
+  <button class="io-btn load-file" onclick="document.getElementById('fileInput').click()">📂 データ読み込み</button>
+  <input type="file" id="fileInput" style="display:none" accept=".json" onchange="importFromFile(event)">
+</div>
+
 <div class="tabs">
   <button class="tab-btn active" onclick="switchTab(0)">馬 1</button>
   <button class="tab-btn" onclick="switchTab(1)">馬 2</button>
@@ -99,28 +113,61 @@ const S_ROWS=[{lb:['','','','父'],sym:'G①',bt:'sg',tk:null,ro:true},{lb:['','
 const M_TREE=[{sex:'♂',a:'col-a',c:'col-c',e:'col-e-green',eL:'g',g:'col-g-green',gL:'d',i:'col-i-green',iL:'a'},{sex:'♀',a:'col-a',c:'col-c',e:'col-e-green',eL:null,g:'col-g-green',gL:null,i:'col-i-green',iL:null},{sex:'♂',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:'e',i:'col-i-blue',iL:'b'},{sex:'♀',a:null,c:null,e:'col-e-blue',eL:null,g:'col-g-blue',gL:null,i:'col-i-blue',iL:null},{sex:'♂',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:'f',i:'col-i-yellow',iL:'c'},{sex:'♀',a:null,c:null,e:null,eL:null,g:'col-g-yellow',gL:null,i:'col-i-yellow',iL:null},{sex:'♂',a:null,c:'col-c-purple',e:'col-e-orange',eL:'い',g:'col-g-pink',gL:'あ',i:null,iL:null},{sex:'♀',a:null,c:'col-c-purple',e:'col-e-orange',eL:null,g:'col-g-pink',gL:null,i:null,iL:null}];
 const M1=[{lb:['','','','父'],sym:'g①',bt:'m1g',auto:true,tk:{r:0,c:'e'}},{lb:['','','父','父'],sym:'g',bt:'',auto:true,tk:{r:0,c:'e'}},{lb:['','父','父','父'],sym:'●',bt:'',auto:false},{lb:['父','父','父','父'],sym:'',bt:'',auto:false},{lb:['父','父','母','父'],sym:'',bt:'m1b',auto:false},{lb:['','父','母','父'],sym:'d',bt:'m1g',auto:true,tk:{r:0,c:'g'}},{lb:['父','母','父','父'],sym:'',bt:'',auto:false},{lb:['父','母','母','父'],sym:'a',bt:'m1b',auto:true,tk:{r:0,c:'i'}},{lb:['','','母','父'],sym:'e①',bt:'m1g',auto:true,tk:{r:2,c:'g'}},{lb:['','母','父','父'],sym:'e',bt:'',auto:true,tk:{r:2,c:'g'}},{lb:['母','父','父','父'],sym:'',bt:'',auto:false},{lb:['母','父','母','父'],sym:'b',bt:'m1b',auto:true,tk:{r:2,c:'i'}},{lb:['','母','母','父'],sym:'f',bt:'m1g',auto:true,tk:{r:4,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:'',auto:false},{lb:['母','母','母','父'],sym:'c',bt:'m1b',auto:true,tk:{r:4,c:'i'}}];
 const M2=[{lb:['','','','父'],sym:'う',bt:'m2p',auto:true,tk:{r:6,c:'c'}},{lb:['','','父','父'],sym:'▲',bt:'',auto:false},{lb:['','父','父','父'],sym:'■',bt:'',auto:false},{lb:['父','父','父','父'],sym:'',bt:'',auto:false},{lb:['父','父','母','父'],sym:'',bt:'',auto:false},{lb:['','父','母','父'],sym:'△',bt:'m2p',auto:false},{lb:['父','母','父','父'],sym:'',bt:'',auto:false},{lb:['父','母','母','父'],sym:'',bt:'',auto:false},{lb:['','','母','父'],sym:'い',bt:'m2p',auto:true,tk:{r:6,c:'e'}},{lb:['','母','父','父'],sym:'□',bt:'',auto:false},{lb:['母','父','父','父'],sym:'',bt:'',auto:false},{lb:['母','父','母','父'],sym:'',bt:'',auto:false},{lb:['','母','母','父'],sym:'あ',bt:'m2p',auto:true,tk:{r:6,c:'g'}},{lb:['母','母','父','父'],sym:'',bt:'',auto:false},{lb:['母','母','母','父'],sym:'',bt:'',auto:false}];
-const M3=[{lb:['','','','父'],sym:'g②',src:null,tk:{r:0,c:'e'},sal:true},{lb:['','','父','父'],sym:'g①',src:{m:'m1',r:0},sal:false},{lb:['','父','父','父'],sym:'g',src:{m:'m1',r:1},sal:false},{lb:['父','父','父','父'],sym:'●',src:{m:'m1',r:2},sal:false},{lb:['父','父','母','父'],sym:'d',src:{m:'m1',r:5},sal:false},{lb:['','父','母','父'],sym:'e①',src:{m:'m1',r:8},sal:true},{lb:['父','母','父','父'],sym:'e',src:{m:'m1',r:9},sal:false},{lb:['父','母','母','父'],sym:'f',src:{m:'m1',r:12},sal:false},{lb:['','','母','父'],sym:'う',src:{m:'m2',r:0},sal:true},{lb:['','母','父','父'],sym:'▲',src:{m:'m2',r:1},sal:false},{lb:['母','父','父','父'],sym:'■',src:{m:'m2',r:2},sal:false},{lb:['母','父','母','父'],sym:'△',src:{m:'m2',r:5},sal:false},{lb:['','母','母','父'],sym:'い',src:{m:'m2',r:8},sal:true},{lb:['母','母','父','父'],sym:'□',src:{m:'m2',r:9},sal:false},{lb:['母','母','母','父'],sym:'あ',src:{m:'m2',r:12},sal:false}];
+const M3=[{lb:['','','','父'],sym:'g②',src:null,tk:{r:0,c:'e'},sal:true},{lb:['','','父','父'],sym:'g①',src:{m:'m1',r:0},sal:false},{lb:['','父','父','父'],sym:'g',src:{m:'m1',r:1},sal:false},{lb:['父','父','父','父'],sym:'●',src:{m:'m1',r:2},sal:false},{lb:['父','父','母','父'],sym:'d',src:{m:'m1',r:5},sal:false},{lb:['','父','母','父'],sym:'e①',src:{m:'m1',r:8},sal:true},{lb:['父','母','父','父'],sym:'e',src:{m:'m1',r:9},sal:false},{lb:['父','母','母','父'],sym:'f',src:{m:'m1',r:12},sal:false},{lb:['','','母','父'],sym:'う',src:{m:'m2',r:0},sal:true},{lb:['','母','父','父'],sym:'▲',src:{m:'m2',r:1},sal:false},{lb:['母','父','父','父'],sym:'■',src:{m:'m2',r:2},sal:false},{lb:['母','父','母','父'],sym:'△',src:{m:'m2',r:5},sal:false},{lb:['','母','母','父'],sym:'い',src:{m:'m2',r:8},sal:true},{lb:['母','父','母','父'],sym:'□',src:{m:'m2',r:9},sal:false},{lb:['母','母','母','父'],sym:'あ',src:{m:'m2',r:12},sal:false}];
 const FACTORS=['速','長','短','中','走'];const N=4;
+const KEY='horse_bloodline_v20';
 
-// 保存・読込
+// 自動保存・復元
 function saveData(){
   const data={};
   document.querySelectorAll('input[id^="x"]').forEach(el=>{ if(el.value) data[el.id]=el.value; });
-  localStorage.setItem('horse_bloodline_data_v10', JSON.stringify(data));
+  localStorage.setItem(KEY, JSON.stringify(data));
 }
 function loadData(){
-  const saved=localStorage.getItem('horse_bloodline_data_v10');
+  const saved=localStorage.getItem(KEY);
   if(!saved)return;
-  const data=JSON.parse(saved);
+  applyData(JSON.parse(saved));
+}
+function applyData(data){
+  document.querySelectorAll('input[id^="x"]').forEach(el=> el.value=''); // 一旦クリア
   Object.keys(data).forEach(id=>{
     const el=document.getElementById(id);
     if(el) el.value=data[id];
   });
-  // 読込後に全タブの表示を更新
   for(let h=0;h<N;h++){ sUpd(h); mUpd(h); }
 }
 
-// UI生成
+// 【新規】ファイル書き出し
+function exportToFile(){
+  const data={};
+  document.querySelectorAll('input[id^="x"]').forEach(el=>{ if(el.value) data[el.id]=el.value; });
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'horse_data.json';
+  a.click();
+  alert("データをファイルとして保存しました。\nキャッシュ削除後の復元に使えます。");
+}
+
+// 【新規】ファイル読み込み
+function importFromFile(event){
+  const file = event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      applyData(data);
+      saveData();
+      alert("ファイルを読み込み、復元しました。");
+    } catch(err) {
+      alert("正しくないファイル形式です。");
+    }
+  };
+  reader.readAsText(file);
+}
+
+// UI生成ロジック
 function xid(h,sec,row,col){return 'x'+h+'_'+sec+'_'+row+'_'+col;}
 function sfx(sym){if(!sym)return '';var m=sym.match(/[①②③④⑤]/);return m?m[0]:'';}
 function clean(s){return s?s.replace(/[①②③④⑤]/g,''):'';}
@@ -193,7 +240,6 @@ function buildTab(h){
   document.getElementById('tab'+h).innerHTML=html;
 }
 
-// 処理
 function switchTab(idx){
   for(var i=0;i<N;i++){
     var btn=document.querySelectorAll('.tab-btn')[i];
@@ -285,7 +331,7 @@ function clearTab(h){
   }
 }
 
-// 初期起動
+// 初期化
 for(var h=0;h<N;h++){buildTab(h);}
 loadData();
 </script>
